@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BEERS SOON?</title>
+    <style>
+        body {
+            background-color: black;
+            color: #f4a261;
+            font-family: monospace;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 6rem;
+            margin-top: 15vh;
+            text-transform: uppercase;
+            text-shadow: 5px 5px #e76f51;
+            animation: shake 0.2s infinite alternate;
+        }
+        pre {
+            font-size: 1.2rem;
+            color: #e9c46a;
+            margin-top: -30px;
+        }
+        .beer {
+            position: absolute;
+            font-size: 2rem;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(720deg); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(-3px); }
+            100% { transform: translateX(3px); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BEERS SOON?</h1>
+
+    <pre>
+      _______
+     |       |
+     |  🍺  |   <-- (this is a beer)
+     |_______|
+    </pre>
+
+    <script>
+        function createBeerEmoji() {
+            const beer = document.createElement("div");
+            beer.innerHTML = "🍻";
+            beer.classList.add("beer");
+            beer.style.left = Math.random() * 100 + "vw";
+            beer.style.animationDuration = (Math.random() * 3 + 2) + "s"; // 2-5 seconds fall time
+            document.body.appendChild(beer);
+            
+            setTimeout(() => {
+                beer.remove();
+            }, 5000); // Remove after falling
+        }
+
+        setInterval(createBeerEmoji, 200);
+    </script>
+
+</body>
+</html>
