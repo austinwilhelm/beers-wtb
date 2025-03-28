@@ -12,18 +12,28 @@
             text-align: center;
             margin: 0;
             overflow: hidden;
+            padding: 0;
         }
         h1 {
-            font-size: 3.5rem; /* Slightly smaller to fit better on screen */
+            font-size: 2rem; /* Adjusted for mobile devices */
             margin-top: 10vh;
             text-transform: uppercase;
             animation: shake 2s infinite alternate;
             line-height: 1.2;
+            word-wrap: break-word;
+            padding: 0 10px;
         }
         .beer {
             font-size: 10rem;
             cursor: pointer;
             margin-top: 20px;
+        }
+        .tap-text {
+            font-size: 1rem; /* Adjusted size for better visibility */
+            color: #fff; /* Improved contrast for visibility */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
         }
         .brewery-info {
             background-color: #2b2d42;
@@ -36,20 +46,28 @@
             margin-left: auto;
             margin-right: auto;
             display: none;
+            position: fixed;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            z-index: 100;
+            overflow-y: auto;
         }
         .brewery-info h2 {
-            font-size: 2.5rem;
+            font-size: 1.8rem; /* Adjusted size */
             margin-bottom: 10px;
         }
         .brewery-info p {
-            font-size: 1.2rem;
+            font-size: 1rem; /* Adjusted size */
+            margin-bottom: 10px;
         }
         .btn {
-            padding: 20px 40px;
+            padding: 10px 20px;
             background-color: #e76f51;
             color: #f4a261;
             border: none;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px;
@@ -60,14 +78,47 @@
             color: #2b2d42;
         }
 
+        .close-btn {
+            font-size: 1.2rem;
+            background-color: transparent;
+            color: #f4a261;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            padding: 5px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+
         @keyframes shake {
             0% { transform: translateX(-5px); }
             100% { transform: translateX(5px); }
         }
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); }
-            100% { transform: translateY(110vh) rotate(720deg); }
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 8vh;
+            }
+            .beer {
+                font-size: 7rem;
+            }
+            .brewery-info {
+                padding: 15px;
+                margin-top: 20px;
+                width: 90%;
+            }
+            .brewery-info h2 {
+                font-size: 1.5rem;
+            }
+            .brewery-info p {
+                font-size: 0.9rem;
+            }
+            .tap-text {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -76,6 +127,7 @@
     <h1>Where to for a brew?</h1>
 
     <div class="beer" id="beer-emoji">🍻</div>
+    <p class="tap-text">(tap here)</p>
 
     <div class="brewery-info" id="brewery-info">
         <h2 id="brewery-name"></h2>
@@ -83,6 +135,7 @@
         <p id="brewery-address"></p>
         <p id="brewery-beer"></p>
         <p id="brewery-fun"></p>
+        <button class="close-btn" onclick="closeBreweryInfo()">Close</button>
     </div>
 
     <script>
@@ -112,6 +165,10 @@
             document.getElementById("brewery-fun").innerText = `Fun Fact: ${randomBrewery.fun}`;
             document.getElementById("brewery-info").style.display = "block";
         });
+
+        function closeBreweryInfo() {
+            document.getElementById("brewery-info").style.display = "none";
+        }
     </script>
 
 </body>
