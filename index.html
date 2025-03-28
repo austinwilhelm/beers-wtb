@@ -6,68 +6,112 @@
     <title>BEERS SOON?</title>
     <style>
         body {
-            background-color: black;
-            color: #f4a261;
-            font-family: monospace;
+            background-color: #f4a261;
+            color: #2b2d42;
+            font-family: "Avenir", sans-serif;
             text-align: center;
             margin: 0;
             overflow: hidden;
         }
         h1 {
-            font-size: 6rem;
-            margin-top: 15vh;
+            font-size: 3.5rem; /* Slightly smaller to fit better on screen */
+            margin-top: 10vh;
             text-transform: uppercase;
-            text-shadow: 5px 5px #e76f51;
-            animation: shake 0.2s infinite alternate;
-        }
-        pre {
-            font-size: 1.2rem;
-            color: #e9c46a;
-            margin-top: -30px;
+            animation: shake 2s infinite alternate;
+            line-height: 1.2;
         }
         .beer {
-            position: absolute;
+            font-size: 10rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .brewery-info {
+            background-color: #2b2d42;
+            color: #f4a261;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        .brewery-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .brewery-info p {
+            font-size: 1.2rem;
+        }
+        .btn {
+            padding: 20px 40px;
+            background-color: #e76f51;
+            color: #f4a261;
+            border: none;
             font-size: 2rem;
-            animation: fall linear infinite;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #e9c46a;
+            color: #2b2d42;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
         }
 
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); }
             100% { transform: translateY(110vh) rotate(720deg); }
         }
-
-        @keyframes shake {
-            0% { transform: translateX(-3px); }
-            100% { transform: translateX(3px); }
-        }
     </style>
 </head>
 <body>
 
-    <h1>BEERS SOON?</h1>
+    <h1>Where to for a brew?</h1>
 
-    <pre>
-      _______
-     |       |
-     |  🍺  |   <-- (this is a beer)
-     |_______|
-    </pre>
+    <div class="beer" id="beer-emoji">🍻</div>
+
+    <div class="brewery-info" id="brewery-info">
+        <h2 id="brewery-name"></h2>
+        <img id="brewery-img" src="" alt="" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+        <p id="brewery-address"></p>
+        <p id="brewery-beer"></p>
+        <p id="brewery-fun"></p>
+    </div>
 
     <script>
-        function createBeerEmoji() {
-            const beer = document.createElement("div");
-            beer.innerHTML = "🍻";
-            beer.classList.add("beer");
-            beer.style.left = Math.random() * 100 + "vw";
-            beer.style.animationDuration = (Math.random() * 3 + 2) + "s"; // 2-5 seconds fall time
-            document.body.appendChild(beer);
-            
-            setTimeout(() => {
-                beer.remove();
-            }, 5000); // Remove after falling
-        }
+        const breweries = [
+            { name: "Excelsior Brewing Co.", address: "421 3rd St, Excelsior, MN", img: "https://images.unsplash.com/photo-1582719895329-3199299e5c30", beer: "Excelsior IPA", fun: "Great patio with views of Lake Minnetonka!" },
+            { name: "LTD Brewing Co.", address: "8 8th Ave N, Hopkins, MN", img: "https://images.unsplash.com/photo-1578496783681-b12c0d746734", beer: "LTD Pale Ale", fun: "Has a cozy taproom with great local art!" },
+            { name: "Steel Toe Brewing", address: "4848 W 35th St, St Louis Park, MN", img: "https://images.unsplash.com/photo-1569747361-7e2820fdc77e", beer: "Size 7 IPA", fun: "Their beer is big, bold, and definitely worth the trip!" },
+            { name: "Unmapped Brewing Co.", address: "747 Washington Ave SE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1581064794978-bb1350f50257", beer: "Discover IPA", fun: "Known for their unique and adventurous brews!" },
+            { name: "Fulton Brewing", address: "414 N Washington Ave, Minneapolis, MN", img: "https://images.unsplash.com/photo-1599696022347-5a8495c0f9fe", beer: "Fulton 300 IPA", fun: "Has a lively atmosphere, perfect for group hangouts!" },
+            { name: "Bauhaus Brew Labs", address: "1315 Tyler St NE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1597783997432-e90b16abef73", beer: "Wonderstuff IPA", fun: "An energetic taproom with a great community vibe!" },
+            { name: "Sisyphus Brewing", address: "712 Washington Ave SE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1577371223722-826b3aee13fc", beer: "The Pilsner", fun: "Don’t miss their fun games while you enjoy a cold one!" },
+            { name: "Shakopee Brewhall", address: "1298 5th Ave E, Shakopee, MN", img: "https://images.unsplash.com/photo-1592194996308-dc5c8db2f90d", beer: "Grizzled Bear Brown Ale", fun: "A great spot to catch live music with your beer!" },
+            { name: "Redeye Brewing Co.", address: "33 8th Ave SE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1589370978283-df173c61f2be", beer: "Redeye Amber Ale", fun: "Has a relaxed vibe with a focus on craft quality!" },
+            { name: "Town Hall Brewery", address: "1430 Washington Ave SE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1564457541-7983a5e299f4", beer: "Masala Mama IPA", fun: "Known for their diverse menu and delicious beer!" },
+            { name: "Apex Brewing Co.", address: "1201 E 7th St, Minneapolis, MN", img: "https://images.unsplash.com/photo-1576624585695-df65e1dbcb72", beer: "Highlander IPA", fun: "A hidden gem with amazing craft beers and a relaxed vibe!" },
+            { name: "Dangerous Man Brewing Co.", address: "1300 2nd St NE, Minneapolis, MN", img: "https://images.unsplash.com/photo-1581064794978-bb1350f50257", beer: "Dangerous Man IPA", fun: "A local favorite with a cozy and inviting atmosphere!" }
+        ];
 
-        setInterval(createBeerEmoji, 200);
+        document.getElementById("beer-emoji").addEventListener("click", () => {
+            const randomBrewery = breweries[Math.floor(Math.random() * breweries.length)];
+
+            // Display the selected brewery's info
+            document.getElementById("brewery-name").innerText = randomBrewery.name;
+            document.getElementById("brewery-img").src = randomBrewery.img;
+            document.getElementById("brewery-address").innerText = randomBrewery.address;
+            document.getElementById("brewery-beer").innerText = `Most notable beer: ${randomBrewery.beer}`;
+            document.getElementById("brewery-fun").innerText = `Fun Fact: ${randomBrewery.fun}`;
+            document.getElementById("brewery-info").style.display = "block";
+        });
     </script>
 
 </body>
